@@ -6,15 +6,20 @@ use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {
-   public function up()
-{
-    Schema::create('posts', function (Blueprint $table) {
-        $table->id();
-        $table->string('title');
-        $table->text('content');
-        $table->foreignId('user_id')->constrained()->onDelete('cascade'); // sasaista ar lietotāju
-        $table->timestamps();
-    });
+    protected $table = 'posts';
+
+    protected $fillable = [
+        'name', 'status', 'created_at', 'updated_at', 'comments_id', 'user_id'
+    ];
+
+    public function comment()
+    {
+        return $this->belongsTo(Comment::class, 'comments_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }
 
-}
